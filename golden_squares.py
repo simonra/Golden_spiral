@@ -4,6 +4,7 @@
 from decimal import *
 getcontext().prec = 8
 
+# Insert a new square into the HTML file with the specified parameters:
 def makeNewSquare(edge_size, offset_left, offset_top, color):
 	new_square_string = "\t\t\t\t<i style=\"position:absolute;display:inline-block;width: %sem;height: %sem;border:none;left: %sem;top: %sem;background-color: %s \"></i>\n" % (edge_size, edge_size, offset_left, offset_top, color)
 	output_file.write(new_square_string)
@@ -11,10 +12,13 @@ def makeNewSquare(edge_size, offset_left, offset_top, color):
 
 # How long the shortest edge will be (for now in ems)
 spiral_size_short_edge = Decimal('30')
-shortest_premissible_edge = Decimal('0.00001');
+# The smallest square is guaranteed to be larger than this:
+shortest_premissible_edge = Decimal('0.00001')
 golden_ratio = Decimal('1.61803398875')
+# The long edge in ems given that one knows the length of the short edge:
 spiral_size_long_edge = spiral_size_short_edge + (spiral_size_short_edge/golden_ratio)
 
+# Inserting the start of the HTML file:
 output_file = open('spiral' + str(spiral_size_short_edge) + '.html', 'w+')
 output_file.write("""\
 <html>
@@ -33,29 +37,16 @@ output_file.write("""\
 				str(spiral_size_short_edge) + """em; height: """ + 
 				str(spiral_size_long_edge) + """em">\n""")
 
+# Variables needed for the loop:
 colors = ["#0dff27","#00ffac","#0dc9ff","#0ce862","#0ce8df"]
-current_shortest_edge = spiral_size_short_edge
-offset_left = Decimal(0)
-offset_top = Decimal(0)
 iterator = 0
-
-current_longest_horisontal_edge = spiral_size_short_edge
-offset_left = Decimal(0)
-offset_top = Decimal(0)
-current_shortest_horisontal_edge = current_longest_horisontal_edge / golden_ratio
-# makeNewSquare(current_longest_horisontal_edge, offset_left, offset_top, colors[iterator])
-
 leftmost_edge = Decimal(0)
 rightmost_edge = spiral_size_long_edge
 top_edge = Decimal(0)
 bottom_edge = spiral_size_short_edge
 edge_size = spiral_size_short_edge
 
-
-# Part of my solution
 while(edge_size > shortest_premissible_edge):
-# Part of Ilses solution
-# for x in xrange(1,8):
 
 	# Make the leftmost square:
 	edge_size = spiral_size_short_edge / (golden_ratio ** Decimal(iterator))
@@ -86,47 +77,7 @@ while(edge_size > shortest_premissible_edge):
 	bottom_edge = bottom_edge - edge_size
 	iterator = iterator + 1
 
-
-	# Ilses version
-	# iterator = iterator + 1
-	# current_longest_vertical_edge = current_shortest_horisontal_edge
-	# current_total_vertical_edge = current_longest_horisontal_edge
-	# current_shortest_vertical_edge = current_total_vertical_edge - current_longest_vertical_edge
-	# offset_left, offset_top = (offset_left + current_longest_horisontal_edge, offset_top)
-	# makeNewSquare(current_shortest_horisontal_edge, offset_left, offset_top, colors[iterator % len(colors)])
-	# iterator = iterator + 1
-
-	# current_total_horisontal_edge = current_longest_vertical_edge
-	# current_longest_horisontal_edge = current_shortest_vertical_edge
-	# current_shortest_horisontal_edge = current_total_horisontal_edge - current_longest_horisontal_edge
-	# offset_left, offset_top = (offset_left + current_shortest_horisontal_edge, offset_top +current_longest_vertical_edge)
-	# makeNewSquare(current_longest_horisontal_edge, offset_left, offset_top, colors[iterator % len(colors)])
-	# iterator = iterator + 1
-
-	# current_longest_vertical_edge = current_shortest_horisontal_edge
-	# current_total_vertical_edge = current_longest_horisontal_edge
-	# current_shortest_vertical_edge = current_total_vertical_edge - current_longest_vertical_edge
-	# offset_left, offset_top = (offset_left - current_shortest_horisontal_edge, offset_top + current_shortest_vertical_edge)
-	# makeNewSquare(current_longest_vertical_edge, offset_left, offset_top, colors[iterator % len(colors)])
-	# iterator = iterator + 1
-
-	# current_total_horisontal_edge = current_longest_vertical_edge
-	# current_longest_horisontal_edge = current_shortest_vertical_edge
-	# current_shortest_horisontal_edge = current_total_horisontal_edge - current_longest_horisontal_edge
-	# offset_left, offset_top = (offset_left, offset_top - current_shortest_vertical_edge)
-	# makeNewSquare(current_longest_horisontal_edge, offset_left, offset_top, colors[iterator % len(colors)])
-
-	# current_shortest_edge = current_shortest_horisontal_edge
-
-
-	# Old ramblings:
-	# makeNewSquare(current_shortest_edge, offset_left, offset_top, colors[iterator % len(colors)])
-	# iterator = iterator + 1
-	# current_shortest_edge = current_shortest_edge / (golden_ratio ** Decimal(iterator))
-	# offset_left = spiral_size_short_edge
-	# offset_top = 0
-# output_file.write(string_1 + str(shortest_premissible_edge) + string_2 + str(shortest_premissible_edge))
-
+# Closing the HTML file:
 output_file.write("""\
 			</span>
 		</span>
